@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- charts/postgresql/templates/secrets.yaml
+- charts/postgresql/templates/statefulset.yaml
+- charts/postgresql/templates/svc-headless.yaml
+- charts/postgresql/templates/svc.yaml
+- templates/configmap-env-daemon.yaml
+- templates/configmap-env-dagit.yaml
+- templates/configmap-env-flower.yaml
+- templates/configmap-env-pipeline-run.yaml
+- templates/configmap-instance.yaml
+- templates/configmap-workspace.yaml
+- templates/deployment-daemon.yaml
+- templates/deployment-dagit.yaml
+- templates/role.yaml
+- templates/rolebinding.yaml
+- templates/secret-postgres.yaml
+- templates/service-dagit.yaml
+- templates/serviceaccount.yaml

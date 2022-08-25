@@ -1,0 +1,20 @@
+---
+# Source: dagster-user-deployments/templates/deployment-user.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dagster-user-deployments-user-code
+spec:
+  template:
+    spec:
+      # nodeName: aks-default-35064155-vmss000002
+      containers:
+        - name: dagster-user-deployments
+          imagePullPolicy: IfNotPresent
+          image: "staging-image"
+          args: ["api", "grpc", "-h", "0.0.0.0", "-p", "3030", "--package-name", "dagster_example_pipeline.repos"]
+          env:
+            - name: DAGSTER_CURRENT_IMAGE
+              value: "staging-image"
+            - name: DAGSTER_CLI_API_GRPC_CONTAINER_CONTEXT
+              value: "{\"k8s\":{\"env_config_maps\":[\"dagster-user-deployments-user-code-user-env\"],\"image_pull_policy\":\"Always\",\"namespace\":\"default\",\"service_account_name\":\"dagster-user-deployments-user-deployments\"}}"

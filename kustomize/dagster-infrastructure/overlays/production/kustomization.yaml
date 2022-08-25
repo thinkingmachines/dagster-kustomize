@@ -1,0 +1,20 @@
+namespace: dagster-production
+
+bases:
+- ../../base
+
+resources:
+- namespace.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+configMapGenerator:
+- name: dagster-workspace-yaml
+  behavior: replace
+  files:
+  - workspace.yaml
+- name: dagster-instance
+  behavior: replace
+  files:
+  - dagster.yaml

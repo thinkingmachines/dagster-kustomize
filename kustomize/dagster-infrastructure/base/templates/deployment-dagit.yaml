@@ -1,0 +1,91 @@
+---
+# Source: dagster/templates/deployment-dagit.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dagster-dagit
+  labels:
+    helm.sh/chart: dagster-0.15.0
+    app.kubernetes.io/name: dagster
+    app.kubernetes.io/instance: dagster
+    app.kubernetes.io/version: "0.15.0"
+    app.kubernetes.io/managed-by: Helm
+    component: dagit
+  annotations:
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dagster
+      app.kubernetes.io/instance: dagster
+      component: dagit
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dagster
+        app.kubernetes.io/instance: dagster
+        component: dagit
+      annotations:
+        checksum/dagster-workspace: 8be32d0cf06d6a0ad4b814bb11e967284065c14e5d546910ca1e5ea6d2e1b021
+        checksum/dagster-instance: 9c506e7be4b578e82617959a968b6e609656ea1ecb791456256a45c75719f2d5
+    spec:
+      serviceAccountName: dagster
+      securityContext:
+        {}
+      initContainers:
+        - name: check-db-ready
+          image: "library/postgres:9.6.21"
+          imagePullPolicy: IfNotPresent
+          command: ['sh', '-c', 'until pg_isready -h dagster-postgresql -p 5432 -U test; do echo waiting for database; sleep 2; done;']
+          securityContext:
+            {}
+      containers:
+        - name: dagster
+          securityContext:
+            {}
+          imagePullPolicy: Always
+          image: "docker.io/dagster/dagster-celery-k8s:0.15.0"
+          command: [
+            "/bin/bash",
+            "-c",
+            "
+dagit -h 0.0.0.0 -p 80 -w /dagster-workspace/workspace.yaml"
+          ]
+          env:
+            - name: DAGSTER_PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: "dagster-postgresql-secret"
+                  key: postgresql-password
+          envFrom:
+            - configMapRef:
+                name: dagster-dagit-env
+          volumeMounts:
+            - name: dagster-instance
+              mountPath: "/opt/dagster/dagster_home/dagster.yaml"
+              subPath: dagster.yaml
+            # Do not use `subPath` to allow the configmap to update if modified
+            - name: dagster-workspace-yaml
+              mountPath: "/dagster-workspace/"
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+            {}
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /dagit_info
+              port: 80
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 3
+
+      volumes:
+        - name: dagster-instance
+          configMap:
+            name: dagster-instance
+        - name: dagster-workspace-yaml
+          configMap:
+            name: dagster-workspace-yaml

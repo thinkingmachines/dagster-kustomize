@@ -1,0 +1,20 @@
+---
+# Source: dagster-user-deployments/templates/rolebinding.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dagster-user-deployments-rolebinding
+  labels: 
+    helm.sh/chart: dagster-user-deployments-0.15.0
+    app.kubernetes.io/name: dagster-user-deployments
+    app.kubernetes.io/instance: dagster-user-deployments
+    app.kubernetes.io/version: "0.15.0"
+    app.kubernetes.io/managed-by: Helm
+
+subjects:
+- kind: ServiceAccount
+  name: dagster-user-deployments-user-deployments
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: dagster-user-deployments-role

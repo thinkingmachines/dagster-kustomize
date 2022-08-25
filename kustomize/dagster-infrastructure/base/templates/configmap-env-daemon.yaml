@@ -1,0 +1,20 @@
+---
+# Source: dagster/templates/configmap-env-daemon.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dagster-daemon-env
+  labels:
+    app: dagster
+    chart: dagster-0.15.0
+    release: dagster
+    heritage: Helm
+data:
+  
+  DAGSTER_HOME: "/opt/dagster/dagster_home"
+  DAGSTER_K8S_PG_PASSWORD_SECRET: "dagster-postgresql-secret"
+  DAGSTER_K8S_INSTANCE_CONFIG_MAP: "dagster-instance"
+  DAGSTER_K8S_PIPELINE_RUN_NAMESPACE: "default"
+  DAGSTER_K8S_PIPELINE_RUN_ENV_CONFIGMAP: "dagster-pipeline-env"
+  DAGSTER_K8S_PIPELINE_RUN_IMAGE: "docker.io/dagster/user-code-example:0.15.0"
+  DAGSTER_K8S_PIPELINE_RUN_IMAGE_PULL_POLICY: "Always"

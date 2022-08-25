@@ -1,0 +1,18 @@
+---
+# Source: dagster/templates/configmap-workspace.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dagster-workspace-yaml
+  labels:
+    app: dagster
+    chart: dagster-0.15.0
+    release: dagster
+    heritage: Helm
+data:
+  workspace.yaml: |
+    load_from:
+      - grpc_server:
+          host: k8s-example-user-code-1
+          port: 3030
+          location_name: k8s-example-user-code-1

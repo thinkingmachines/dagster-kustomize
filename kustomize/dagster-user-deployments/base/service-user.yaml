@@ -1,0 +1,26 @@
+---
+# Source: dagster-user-deployments/templates/service-user.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-code
+  labels:
+    helm.sh/chart: dagster-user-deployments-0.15.0
+    app.kubernetes.io/name: dagster-user-deployments
+    app.kubernetes.io/instance: dagster-user-deployments
+    app.kubernetes.io/version: "0.15.0"
+    app.kubernetes.io/managed-by: Helm
+    component: user-deployments
+    deployment: user-code
+  annotations:
+spec:
+  type: "ClusterIP"
+  ports:
+    - port: 3030
+      protocol: TCP
+      name: grpc
+  selector:
+    app.kubernetes.io/name: dagster-user-deployments
+    app.kubernetes.io/instance: dagster-user-deployments
+    component: user-deployments
+    deployment: user-code

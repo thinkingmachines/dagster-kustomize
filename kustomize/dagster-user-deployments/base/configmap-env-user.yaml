@@ -1,0 +1,12 @@
+---
+# Source: dagster-user-deployments/templates/configmap-env-user.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dagster-user-deployments-user-code-user-env
+  labels:
+    app: dagster-user-deployments
+    chart: dagster-user-deployments-0.15.0
+    release: dagster-user-deployments
+    heritage: Helm
+data:
