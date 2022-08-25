@@ -8,7 +8,7 @@ generatorOptions:
 
 images:
 - name: staging-image
-  newName: dagster
+  newName: dagster-image
   newTag: 0.15.0
 
 patches:
