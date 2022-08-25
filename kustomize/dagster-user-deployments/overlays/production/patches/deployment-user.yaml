@@ -17,4 +17,4 @@ spec:
             - name: DAGSTER_CURRENT_IMAGE
               value: "staging-image"
             - name: DAGSTER_CLI_API_GRPC_CONTAINER_CONTEXT
-              value: "{\"k8s\":{\"env_config_maps\":[\"dagster-user-deployments-user-code-user-env\"],\"image_pull_policy\":\"Always\",\"namespace\":\"dagster-staging\",\"service_account_name\":\"dagster-user-deployments-user-deployments\"}}"
+              value: "{\"k8s\":{\"env_config_maps\":[\"dagster-user-deployments-user-code-user-env\"],\"image_pull_policy\":\"Always\",\"namespace\":\"dagster-production\",\"service_account_name\":\"dagster-user-deployments-user-deployments\"}}"

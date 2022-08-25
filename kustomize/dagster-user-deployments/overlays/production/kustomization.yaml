@@ -1,0 +1,26 @@
+namespace: dagster-production
+
+bases:
+- ../../base
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+images:
+- name: production-image
+  newName: dagster
+  newTag: 0.15.0
+
+patches:
+- patches/deployment-user.yaml
+- patches/configmap-env-shared.yaml
+
+replacements:
+- source:
+    name: dagster-user-deployments-user-code
+    fieldPath: spec.template.spec.containers.0.image
+  targets:
+  - select:
+      name: dagster-user-deployments-user-code
+    fieldPaths:
+    - spec.template.spec.containers.0.env.0.value
