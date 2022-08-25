@@ -13,6 +13,7 @@ requests = "2.26.0"
 autopep8 = "1.5.7"
 pyyaml = "5.4.1"
 dagster = "0.15.0"
+nbconvert = "6.5.1"
 
 [tool.poetry.dev-dependencies]
 dagit = "0.15.0"
